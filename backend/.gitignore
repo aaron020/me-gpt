@@ -1,6 +1,3 @@
-# Secrets
-terraform/param-store/variables.tf
-
 # Ignore Terraform state files
 *.tfstate
 *.tfstate.*
@@ -20,3 +17,7 @@ terraform/lambda-layer/build/*
 terraform/lambda/build/*
 
 .idea
+
+# Secrets
+terraform/param-store/variables.tf
+
