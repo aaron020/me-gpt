@@ -1,0 +1,8 @@
+{
+  "requestContext": {
+    "domainName": "7v06mm1h35.execute-api.eu-west-1.amazonaws.com",
+    "stage": "dev",
+    "connectionId": ""
+  },
+  "body": "{\"action\":\"sendmessage\",\"message\":\"hello,everyone!\",\"tone\":\"HAPPY\"}"
+}

@@ -1,0 +1,22 @@
+# Secrets
+terraform/param-store/variables.tf
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Ignore Terraform directories
+**/.terraform/*
+
+
+# Ignore layer build directories
+terraform/lambda-layer/python/*
+terraform/lambda-layer/pre-build/*
+terraform/lambda-layer/build/*
+
+
+# Ignore lambda build directories
+terraform/lambda/build/*
+
+.idea

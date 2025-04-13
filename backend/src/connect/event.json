@@ -1,0 +1,9 @@
+{
+  "requestContext": {
+    "connectionId": "IaVPfeOKjoECIoA"
+  },
+  "queryStringParameters": {
+    "chatId": "test-123",
+    "user": "jeff"
+  }
+}
