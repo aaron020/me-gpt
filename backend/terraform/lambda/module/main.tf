@@ -104,7 +104,7 @@ resource "aws_lambda_permission" "allow_gateway" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:eu-west-1:471112781107:7v06mm1h35/*/*"
+  source_arn    = var.api_gateway_arn
 }
 
 

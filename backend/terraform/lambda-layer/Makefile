@@ -1,11 +1,12 @@
-PACKAGE_NAME := anthropic-layer
-VERSION := 0.49.0
+PACKAGE_NAME := database-layer
+VERSION := 2.0.40
 
 .PHONY: build clean
 
 build:
-#	mkdir -p python
-#	python3 -m pip install requests==$(VERSION) -t python
+	mkdir -p python
+	python3 -m pip install sqlalchemy==$(VERSION) -t python
+	python3 -m pip install mysql-connector-python -t python
 	zip -r ${PACKAGE_NAME}.zip python
 
 clean:

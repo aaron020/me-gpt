@@ -22,6 +22,7 @@ module "connect_lambda" {
   runtime                 = "python3.11"
   timeout                 = 300
   memory_size             = 256
+  allow_manage_connections  = true
   common_layer_arn        = [data.aws_lambda_layer_version.common_layer.arn]
 }
 
@@ -37,6 +38,7 @@ module "disconnect_lambda" {
   runtime                 = "python3.11"
   timeout                 = 300
   memory_size             = 256
+  allow_manage_connections  = true
   common_layer_arn        = [data.aws_lambda_layer_version.common_layer.arn]
 }
 
@@ -71,4 +73,22 @@ module "send_message_lambda" {
   allow_access_params       = true
   common_layer_arn          = [data.aws_lambda_layer_version.common_layer.arn, data.aws_lambda_layer_version.anthropic_layer.arn,
                                "arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:12"]
+}
+
+
+module "list_chats_lambda" {
+  source                    = "./module"
+  function_name             = "chat-app-list-chats"
+  lambda_output_path        = "${path.module}/build/chat-app-list-chats.zip"
+  lambda_source_dir         = "${path.module}/../../src/list-chats"
+  handler                   = "app.list_chats"
+  s3_key                    = "chat-app-list-chats.zip"
+  lambda_role_name          = "ChatAppListChatsLambdaRole"
+  runtime                   = "python3.11"
+  timeout                   = 300
+  memory_size               = 256
+  allow_manage_connections  = false
+  allow_access_params       = false
+  common_layer_arn          = [data.aws_lambda_layer_version.common_layer.arn]
+  api_gateway_arn           = "arn:aws:execute-api:eu-west-1:471112781107:ln0ldctvwl/*/*/*"
 }

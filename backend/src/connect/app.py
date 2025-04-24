@@ -1,3 +1,6 @@
+import json
+import time
+
 import boto3
 
 from common.database_helper import DatabaseHelper
@@ -27,10 +30,40 @@ def connect(event, context):
 
     try:
         response = database_helper.put_connection_id_and_chat_id_and_user(chat_id, connection_id, user)
-        return ResponseHelper.the_status_code(response['ResponseMetadata']['HTTPStatusCode'])
     except Exception as e:
-        print(f'Error adding to database: {e}')
+        logger.error(f'Error adding to database: {e}')
         return ResponseHelper.the_status_code(500)
+
+    domain = event.get("requestContext", {}).get("domainName")
+    stage = event.get("requestContext", {}).get("stage")
+
+    apig_management_client = boto3.client(
+        "apigatewaymanagementapi", endpoint_url=f"https://{domain}/{stage}"
+    )
+
+    try:
+        connections: list = database_helper.get_connections_by_chat_id(chat_id)
+    except Exception as e:
+        logger.error(f'Error getting chat connection ids: {e}')
+        return ResponseHelper.the_status_code
+
+
+    for connection in connections:
+        if connection.get('connectionId') != connection_id:
+            send = {
+                "user": 'ALL',
+                "message": f'{user} has joined the chat!',
+                "time": int(time.time()),
+                "tone": ''
+            }
+            try:
+                apig_management_client.post_to_connection(
+                    Data=json.dumps(send), ConnectionId=connection.get('connectionId')
+                )
+            except Exception as e:
+                logger.error(f'Unable to post message for connection Id: {connection_id} : {e}')
+
+    return ResponseHelper.the_status_code(response['ResponseMetadata']['HTTPStatusCode'])
 
 
 

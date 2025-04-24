@@ -75,3 +75,9 @@ variable "common_layer_arn"{
   description = "Chat app common layer arn"
   type = list(string)
 }
+
+variable "api_gateway_arn" {
+  description = "ARN of API gateway that is allowed to call the lambdas"
+  type = string
+  default = "arn:aws:execute-api:eu-west-1:471112781107:7v06mm1h35/*/*"
+}

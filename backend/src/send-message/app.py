@@ -52,16 +52,30 @@ def send_message(event, context):
         print(f'Error getting chat connection ids: {e}')
         return ResponseHelper.the_status_code
 
-
+    send_user = ''
+    for connection in connections:
+        if connection.get('connectionId') == connection_id:
+            send_user = connection.get('user')
 
     for connection in connections:
-        send = {
-            "user": connection.get('user'),
-            "message": text,
-            "time": int(time.time()),
-            "tone": tone_from_input
-        }
-        apig_management_client.post_to_connection(
-            Data=json.dumps(send), ConnectionId=connection.get('connectionId')
-        )
+        if connection.get('connectionId') == connection_id:
+            send = {
+                "user": 'me',
+                "message": text,
+                "time": int(time.time()),
+                "tone": tone_from_input
+            }
+        else:
+            send = {
+                "user": send_user,
+                "message": text,
+                "time": int(time.time()),
+                "tone": tone_from_input
+            }
+        try:
+            apig_management_client.post_to_connection(
+                Data=json.dumps(send), ConnectionId=connection.get('connectionId')
+            )
+        except Exception as e:
+            logger.error(f'Unable to post message for connection Id: {connection_id} : {e}')
     return ResponseHelper.the_status_code(200)

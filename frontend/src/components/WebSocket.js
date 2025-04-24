@@ -95,7 +95,7 @@ function WebSocketComponent() {
                         onChange={(e) => setChatId(e.target.value)}
                         style={{ marginRight: '0.5rem' }}
                     />
-                    <button onClick={connect}>Connect</button>
+                    <button onClick={connect} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200">Connect</button>
                 </div>
             )}
 
@@ -118,13 +118,27 @@ function WebSocketComponent() {
                                 <option key={tone.name} value={tone.name}>{tone.emoji}</option>
                             ))}
                         </select>
-                        <button onClick={sendMessage}>Send Message</button>
+                        <button
+                            onClick={sendMessage}
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+                        >
+                            Send Message
+                        </button>
                     </div>
 
                     <div>
                         {messages.map((msg, index) => (
                             <div key={index}>
-                                <strong>{msg.user || 'Anonymous'}:</strong> {msg.message} <em>({msg.tone})</em>
+                                    {msg.user === 'ALL' ? (
+                                        <>
+                                            <strong>📢 {msg.message}</strong> 
+                                        </>
+                                        ) : (
+                                        <>
+                                            <strong>{msg.user || 'Anonymous'}:</strong> {msg.message} 
+                                            {msg.tone && <em>({msg.tone})</em>}
+                                        </>
+                                    )}
                             </div>
                         ))}
                     </div>
